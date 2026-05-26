@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package user;
+
+option go_package = "golang-project-structure/genprotos/user;userpb";
+
+service UserService {
+  rpc Create(CreateRequest) returns (UserResponse);
+  rpc GetByID(GetByIDRequest) returns (UserResponse);
+  rpc List(ListRequest) returns (ListResponse);
+  rpc Update(UpdateRequest) returns (UserResponse);
+  rpc Delete(DeleteRequest) returns (DeleteResponse);
+}
+
+message User {
+  uint64 id = 1;
+  string name = 2;
+  string email = 3;
+  string created_at = 4;
+  string updated_at = 5;
+}
+
+message CreateRequest {
+  string name = 1;
+  string email = 2;
+}
+
+message GetByIDRequest {
+  uint64 id = 1;
+}
+
+message UpdateRequest {
+  uint64 id = 1;
+  string name = 2;
+  string email = 3;
+}
+
+message DeleteRequest {
+  uint64 id = 1;
+}
+
+message ListRequest {
+  int32 page = 1;
+  int32 limit = 2;
+}
+
+message UserResponse {
+  int32 status_code = 1;
+  string message = 2;
+  User data = 3;
+}
+
+message ListResponse {
+  int32 status_code = 1;
+  string message = 2;
+  repeated User data = 3;
+  Meta meta = 4;
+}
+
+message DeleteResponse {
+  int32 status_code = 1;
+  string message = 2;
+}
+
+message Meta {
+  int32 items_per_page = 1;
+  int64 total_items = 2;
+  int32 current_page = 3;
+  int32 last_page = 4;
+}
