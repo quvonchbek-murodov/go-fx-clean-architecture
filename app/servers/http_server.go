@@ -7,8 +7,11 @@ import (
 	"net/http"
 
 	"golang-project-structure/config"
+	_ "golang-project-structure/docs"
 
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
 )
@@ -25,6 +28,7 @@ func NewGinEngine(cfg *config.Config) *gin.Engine {
 	engine.GET("/health", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"status": "ok"})
 	})
+	engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	return engine
 }
 

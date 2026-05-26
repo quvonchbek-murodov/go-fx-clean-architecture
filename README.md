@@ -10,6 +10,7 @@ A production-style Go service scaffold running **HTTP (Gin)** and **gRPC** serve
 - **cleanenv + godotenv** configuration from environment / `.env`.
 - **zap** structured logging.
 - **protoc** code generation with a `make gen-protos` target.
+- **Swagger / OpenAPI** docs (swaggo) served at `/swagger/index.html`.
 - **Docker** + **docker-compose** for local development.
 
 ## Architecture
@@ -53,6 +54,7 @@ protos/
   user/user.proto          # proto source
 genprotos/
   user/                    # generated code (never edit by hand)
+docs/                      # generated swagger docs (swag init)
 Dockerfile
 docker-compose.yaml
 Makefile
@@ -82,6 +84,8 @@ make run
 ```
 
 The HTTP server listens on `:8080`, the gRPC server on `:9090` (with reflection enabled).
+
+Swagger UI is available at <http://localhost:8080/swagger/index.html>.
 
 ## Configuration
 
@@ -144,6 +148,12 @@ Proto sources live in `protos/<domain>/`; generated Go lands in `genprotos/<doma
 make gen-protos folder=user
 ```
 
+Swagger docs are generated from controller annotations into `docs/` (requires the `swag` CLI: `go install github.com/swaggo/swag/cmd/swag@latest`):
+
+```bash
+make swagger
+```
+
 ## Make targets
 
 | Target                | Description                          |
@@ -155,6 +165,7 @@ make gen-protos folder=user
 | `make docker-down`    | Stop containers                      |
 | `make docker-rebuild` | Rebuild and restart containers       |
 | `make gen-protos`     | Generate Go code from `.proto` files |
+| `make swagger`        | Generate Swagger docs into `docs/`   |
 
 ## Adding a new domain
 

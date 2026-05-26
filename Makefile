@@ -1,4 +1,4 @@
-.PHONY: run build tidy docker-up docker-down docker-rebuild gen-protos
+.PHONY: run build tidy docker-up docker-down docker-rebuild gen-protos swagger
 
 run:
 	@go run cmd/main.go
@@ -8,6 +8,9 @@ build:
 
 tidy:
 	@go mod tidy
+
+swagger:
+	@swag init -g cmd/main.go --parseInternal --parseDependency --parseDepth 2 -o docs
 
 docker-up:
 	@docker compose up -d
